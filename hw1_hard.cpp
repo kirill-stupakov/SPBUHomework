@@ -55,18 +55,21 @@ double evaluate(int x, int y, char op) {
             if (y == 0) {
                 throw invalid_argument("Can't divide by zero!");
             }
+            
             return (double)x / y;
 
         case '%':
             if (y == 0) {
                 throw invalid_argument("Can't divide by zero!");
             }
+
             return x % y;
         
         case '^':
             if (x == 2 && y >= 0) {
                 return 1 << y;
             }
+
             return pow(x, y);
         
         default:
