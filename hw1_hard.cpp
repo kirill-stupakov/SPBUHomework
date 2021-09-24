@@ -5,12 +5,39 @@
 
 using namespace std;
 
-int add(int x, int y) {
-    return x + y;
+int add(unsigned int x, unsigned int y) {
+    while (y != 0) {
+        unsigned carry = x & y;
+        
+        x = x ^ y;
+        y = carry << 1;
+    }
+
+    return x;
 }
 
 int multiply(int x, int y) {
-    return x * y;
+    bool needSignFlip = (x < 0) ^ (y < 0);
+
+    x = abs(x);
+    y = abs(y);
+
+    unsigned int res = 0;
+
+    while (y != 0) {
+        if (y & 1) {
+            res = add(res, x);
+        }
+
+        x <<= 1;
+        y >>= 1;
+    }
+
+    if (needSignFlip) {
+        res = add(~res, 1);
+    }
+
+    return res;
 }
 
 double evaluate(int x, int y, char op) {
