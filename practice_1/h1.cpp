@@ -8,7 +8,7 @@ unsigned long long quadraticTime(int n, int a, int b, int c) {
 
   for (int sumA = 2*a; sumA <= n; sumA += 2) {
     for (int sumB = b; sumB <= n; sumB += 2) {
-      if (c >= n - sumA - sumB) {
+      if (c <= n - sumA - sumB) {
         ans++;
       }
     }
