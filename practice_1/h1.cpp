@@ -19,6 +19,10 @@ unsigned long long quadraticTime(int n, int a, int b, int c) {
 
 // Simplify the inner loop
 unsigned long long linearTime(int n, int a, int b, int c) {
+  if (n < 2*a + b + c) {
+    return 0;
+  }
+  
   unsigned long long ans = 0;
 
   for (int sumA = 2*a; sumA <= n - b - c; sumA += 2) {
