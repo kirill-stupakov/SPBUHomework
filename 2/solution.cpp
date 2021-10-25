@@ -1,8 +1,10 @@
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
@@ -61,6 +63,54 @@ int numberOfOccurences(string text, string pattern) {
   return ans;
 }
 
+string randomString(int length) {
+  const string characters = " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  srand(time(0));
+  
+  string ans = "";
+  for (int i = 0; i < length; i++) {
+    ans += characters[rand() % characters.length()];
+  }
+
+  return ans;
+}
+
+void compareImplementations() {
+  int textSize = 1 << 18;
+  int sampleSize = textSize / 100;
+
+  cout << "          ";
+  for (int i = 0; i < 10; i++) {
+    cout << "\t" << setw(8) << i + 1 << "%";
+  }
+  cout << "\n";
+
+  for (int i = 0; i < 10; i++) {
+    string text = randomString(textSize);
+
+    cout << setw(10) << textSize;
+
+    for (int j = 0; j < 10; j++) {
+      sampleSize = textSize * (j+1) / 100;
+      string sample = text.substr(textSize - sampleSize);
+
+      clock_t myAlg = clock();
+      findKMP(text, sample, 0, text.length());
+      myAlg -= clock();
+
+      clock_t builtinAlg = clock();
+      text.find(sample);
+      builtinAlg -= clock();
+
+      cout << "\t" << setw(5) << -myAlg << " / " << -builtinAlg;
+    }
+
+    cout << "\n";
+    textSize *= 2;
+  }
+}
+
 int main() {
   ifstream input("sample.txt");
   stringstream buffer;
@@ -76,6 +126,8 @@ int main() {
   for (string pattern: words) {
     cout << "\"" << pattern << "\": " << numberOfOccurences(text, pattern) << "\n";
   }
-	
+
+  compareImplementations();
+
 	return 0;
 }
