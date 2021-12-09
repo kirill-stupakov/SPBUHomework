@@ -9,7 +9,9 @@ private:
     std::filesystem::path currentPath;
 
 public:
-    bool isFileExists(const std::filesystem::path &path) const;
+    bool isValid(const std::filesystem::path&) const;
+
+    bool isFolder(const std::filesystem::path&) const;
 
     void changePath(const std::string&);
 
@@ -21,14 +23,14 @@ public:
 
     std::string getPath() const;
 
-    std::string getFileContent(const std::string &name) const;
+    std::string getFileContent(const std::string&) const;
 
     std::filesystem::directory_iterator getFolderContent() const;
 
-    void createFile(const std::string& name) const;
+    void createFile(const std::string&) const;
 
-    void createFolder(const std::string& name) const;
+    void createFolder(const std::string&) const;
 
-    void remove(const std::string& name) const;
+    void remove(const std::string&) const;
 
 };

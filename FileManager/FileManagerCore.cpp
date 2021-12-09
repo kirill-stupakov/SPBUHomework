@@ -1,15 +1,19 @@
 #include "FileManagerCore.h"
 
-bool FileManagerCore::isFileExists(const std::filesystem::path& path) const {
+bool FileManagerCore::isValid(const std::filesystem::path& path) const {
     return std::filesystem::exists(path);
+}
+
+bool FileManagerCore::isFolder(const std::filesystem::path &path) const {
+    return std::filesystem::is_directory(path);
 }
 
 void FileManagerCore::changePath(const std::string& path) {
     const std::filesystem::path newPath = path;
-    if (isFileExists(newPath)) {
+    if (isValid(newPath) && isFolder(newPath)) {
         currentPath = newPath;
     } else {
-        throw std::runtime_error("The path you are trying to navigate does not exist!");
+        throw std::runtime_error("This folder does not exist!");
     }
 }
 
@@ -34,7 +38,7 @@ std::filesystem::directory_iterator FileManagerCore::getFolderContent() const {
 }
 
 void FileManagerCore::createFile(const std::string &name) const {
-    if (isFileExists(currentPath / name)) {
+    if (isValid(currentPath / name)) {
         throw std::runtime_error("This file already exists!");
     } else {
         std::ofstream file(currentPath / name);
@@ -49,7 +53,7 @@ void FileManagerCore::createFolder(const std::string &name) const {
 }
 
 void FileManagerCore::remove(const std::string &name) const {
-    if (isFileExists(currentPath / name)) {
+    if (isValid(currentPath / name)) {
         std::filesystem::remove_all(currentPath / name);
     } else {
         throw std::runtime_error("This file doesn't exist!");
@@ -57,7 +61,7 @@ void FileManagerCore::remove(const std::string &name) const {
 }
 
 std::string FileManagerCore::getFileContent(const std::string &name) const {
-    if (isFileExists(currentPath / name)) {
+    if (isValid(currentPath / name)) {
         std::ifstream file(currentPath / name);
         std::stringstream buffer;
         buffer << file.rdbuf();
@@ -66,7 +70,3 @@ std::string FileManagerCore::getFileContent(const std::string &name) const {
         throw std::runtime_error("This file doesn't exist!");
     }
 }
-
-
-
-
