@@ -125,10 +125,3 @@ void GraphicalFileManager::start() {
         executeOption();
     }
 }
-
-
-
-
-
-
-
